@@ -108,11 +108,6 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
     }
 
     try {
-      if (typeof window !== "undefined") {
-        localStorage.removeItem("portfolio-users")
-        localStorage.removeItem("portfolio-current-user")
-      }
-
       const { user: firebaseUser } = await createUserWithEmailAndPassword(auth, email, password)
 
       // Update display name
