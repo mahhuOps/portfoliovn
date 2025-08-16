@@ -3,106 +3,166 @@
 import type React from "react"
 
 import { createContext, useContext, useEffect, useState } from "react"
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  updateProfile,
+} from "firebase/auth"
+import { doc, setDoc, getDoc } from "firebase/firestore"
+import { auth, db } from "@/lib/firebase"
 
-interface User {
+interface UserProfile {
   id: string
   email: string
   name: string
-  avatar?: string
   role: "user" | "admin"
+  createdAt: Date
 }
 
 interface AuthContextType {
-  user: User | null
+  user: UserProfile | null
   loading: boolean
   signIn: (email: string, password: string) => Promise<void>
   signUp: (email: string, password: string, name: string) => Promise<void>
-  signOut: () => Promise<void>
+  logout: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
+export function FirebaseAuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<UserProfile | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const currentUser = localStorage.getItem("portfolio-current-user")
-    if (currentUser) {
-      setUser(JSON.parse(currentUser))
+    if (!auth) {
+      console.log("[v0] Firebase auth not initialized - using fallback auth")
+      setLoading(false)
+      return
     }
-    setLoading(false)
+
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        if (!db) {
+          console.log("[v0] Firestore not initialized - using basic user data")
+          setUser({
+            id: firebaseUser.uid,
+            email: firebaseUser.email!,
+            name: firebaseUser.displayName || "",
+            role: "user",
+            createdAt: new Date(),
+          })
+          setLoading(false)
+          return
+        }
+
+        // Get user profile from Firestore
+        try {
+          const userDoc = await getDoc(doc(db, "users", firebaseUser.uid))
+          if (userDoc.exists()) {
+            const userData = userDoc.data()
+            setUser({
+              id: firebaseUser.uid,
+              email: firebaseUser.email!,
+              name: userData.name || firebaseUser.displayName || "",
+              role: userData.role || "user",
+              createdAt: userData.createdAt?.toDate() || new Date(),
+            })
+          }
+        } catch (error) {
+          console.error("[v0] Error fetching user data:", error)
+          // Fallback to basic user data
+          setUser({
+            id: firebaseUser.uid,
+            email: firebaseUser.email!,
+            name: firebaseUser.displayName || "",
+            role: "user",
+            createdAt: new Date(),
+          })
+        }
+      } else {
+        setUser(null)
+      }
+      setLoading(false)
+    })
+
+    return () => unsubscribe()
   }, [])
 
   const signIn = async (email: string, password: string) => {
-    const users = JSON.parse(localStorage.getItem("portfolio-users") || "[]")
-    const existingUser = users.find((u: any) => u.email === email)
+    if (!auth) {
+      throw new Error("Firebase authentication is not configured. Please check your Firebase setup.")
+    }
 
-    if (existingUser && existingUser.password === password) {
-      const userToLogin = {
-        id: existingUser.id,
-        email: existingUser.email,
-        name: existingUser.name,
-        role: existingUser.role,
-      }
-      localStorage.setItem("portfolio-current-user", JSON.stringify(userToLogin))
-      setUser(userToLogin)
-    } else if (email === "admin@example.com" && password === "admin") {
-      // Demo admin account
-      const adminUser = { id: "admin", email, name: "Admin", role: "admin" as const }
-      localStorage.setItem("portfolio-current-user", JSON.stringify(adminUser))
-      setUser(adminUser)
-    } else if (email === "demo@example.com" && password === "demo") {
-      // Demo user account
-      const demoUser = { id: "demo", email, name: "Demo User", role: "user" as const }
-      localStorage.setItem("portfolio-current-user", JSON.stringify(demoUser))
-      setUser(demoUser)
-    } else {
-      throw new Error("Invalid email or password")
+    try {
+      await signInWithEmailAndPassword(auth, email, password)
+    } catch (error: any) {
+      throw new Error(error.message)
     }
   }
 
   const signUp = async (email: string, password: string, name: string) => {
-    const users = JSON.parse(localStorage.getItem("portfolio-users") || "[]")
-
-    // Check if email already exists
-    const existingUser = users.find((u: any) => u.email === email)
-    if (existingUser) {
-      throw new Error("Email already exists")
+    if (!auth) {
+      throw new Error("Firebase authentication is not configured. Please check your Firebase setup.")
     }
 
-    // Create new user with unique ID
-    const newUser = {
-      id: Date.now().toString(),
-      email,
-      name,
-      password, // In real app, this would be hashed
-      role: "user" as const,
-      createdAt: new Date().toISOString(),
+    try {
+      const { user: firebaseUser } = await createUserWithEmailAndPassword(auth, email, password)
+
+      // Update display name
+      await updateProfile(firebaseUser, { displayName: name })
+
+      if (db) {
+        // Create user profile in Firestore
+        const userProfile = {
+          name,
+          email,
+          role: email === "admin@example.com" ? "admin" : "user",
+          createdAt: new Date(),
+          portfolioData: {
+            personalInfo: {},
+            projects: [],
+            experience: [],
+            education: [],
+            skills: [],
+          },
+        }
+
+        await setDoc(doc(db, "users", firebaseUser.uid), userProfile)
+      }
+    } catch (error: any) {
+      throw new Error(error.message)
+    }
+  }
+
+  const logout = async () => {
+    if (!auth) {
+      throw new Error("Firebase authentication is not configured.")
     }
 
-    // Add to users list
-    users.push(newUser)
-    localStorage.setItem("portfolio-users", JSON.stringify(users))
-
-    // Set as current user
-    const userToLogin = { id: newUser.id, email, name, role: newUser.role }
-    localStorage.setItem("portfolio-current-user", JSON.stringify(userToLogin))
-    setUser(userToLogin)
+    try {
+      await signOut(auth)
+    } catch (error: any) {
+      throw new Error(error.message)
+    }
   }
 
-  const signOut = async () => {
-    localStorage.removeItem("portfolio-current-user")
-    setUser(null)
+  const value = {
+    user,
+    loading,
+    signIn,
+    signUp,
+    logout,
   }
 
-  return <AuthContext.Provider value={{ user, loading, signIn, signUp, signOut }}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
 export function useAuth() {
   const context = useContext(AuthContext)
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider")
+    throw new Error("useAuth must be used within a FirebaseAuthProvider")
   }
   return context
 }

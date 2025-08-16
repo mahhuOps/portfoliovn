@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useAuth } from "@/components/auth/auth-provider"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -13,14 +13,20 @@ import { Sparkles, User, Shield } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useToast } from "@/hooks/use-toast"
+import { useAuthLocal } from "@/components/auth/local-auth-provider"
 
 export default function SignInPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
-  const { signIn } = useAuth()
+  const { signIn, user } = useAuth()
   const router = useRouter()
   const { toast } = useToast()
+  const { signInLocal } = useAuthLocal()
+
+  useEffect(() => {
+    if (user) router.push("/dashboard")
+  }, [user])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -77,7 +83,7 @@ export default function SignInPage() {
     try {
       const demoEmail = demoType === "admin" ? "admin@example.com" : "demo@example.com"
       const demoPassword = demoType === "admin" ? "admin" : "demo"
-      await signIn(demoEmail, demoPassword)
+      await signInLocal(demoEmail, demoPassword)
       toast({
         title: "Đăng nhập demo thành công!",
         description: `Chào mừng bạn với tài khoản ${demoType === "admin" ? "quản trị viên" : "người dùng"} demo.`,

@@ -25,7 +25,7 @@ import { redirect } from "next/navigation"
 import { useEffect } from "react"
 
 export default function DashboardPage() {
-  const { user, loading, signOut } = useAuth()
+  const { user, loading, logout } = useAuth()
 
   useEffect(() => {
     if (!loading && !user) {
@@ -60,7 +60,7 @@ export default function DashboardPage() {
             </div>
             <div className="flex items-center gap-2">
               <ThemeToggle />
-              <Button variant="ghost" size="sm" onClick={signOut}>
+              <Button variant="ghost" size="sm" onClick={logout}>
                 <LogOut className="w-4 h-4 mr-2" />
                 Sign Out
               </Button>

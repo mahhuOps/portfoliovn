@@ -3,9 +3,10 @@ import type { Metadata } from "next"
 import { Geist } from "next/font/google"
 import { Manrope } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
-import { AuthProvider } from "@/components/auth/auth-provider"
+import { FirebaseAuthProvider } from "@/components/auth/auth-provider"
 import { Toaster } from "@/components/ui/toaster"
 import "./globals.css"
+import { AuthProvider } from "@/components/auth/local-auth-provider"
 
 const geist = Geist({
   subsets: ["latin"],
@@ -43,7 +44,11 @@ html {
       </head>
       <body className={`${geist.variable} ${manrope.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-          <AuthProvider>{children}</AuthProvider>
+          <FirebaseAuthProvider>
+            <AuthProvider>
+              {children}
+            </AuthProvider>
+          </FirebaseAuthProvider>
           <Toaster />
         </ThemeProvider>
       </body>
