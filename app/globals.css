@@ -124,4 +124,28 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Adding cursor pointer to all interactive elements */
+  button,
+  [role="button"],
+  a,
+  [role="link"],
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"],
+  select,
+  [tabindex]:not([tabindex="-1"]),
+  [onclick],
+  [data-clickable="true"],
+  .cursor-pointer {
+    cursor: pointer;
+  }
+
+  /* Ensure disabled elements don't show pointer cursor */
+  button:disabled,
+  input:disabled,
+  select:disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
+  }
 }

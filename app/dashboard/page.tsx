@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ThemeToggle } from "@/components/ui/theme-toggle"
+import { LanguageSwitcher } from "@/components/language-switcher"
 import {
   Plus,
   User,
@@ -23,9 +24,11 @@ import {
 import Link from "next/link"
 import { redirect } from "next/navigation"
 import { useEffect } from "react"
+import { useTranslations } from "next-intl"
 
 export default function DashboardPage() {
   const { user, loading, logout } = useAuth()
+  const t = useTranslations()
 
   useEffect(() => {
     if (!loading && !user) {
@@ -56,13 +59,14 @@ export default function DashboardPage() {
                 </div>
                 <span className="font-sans font-semibold text-xl">Portfolio Manager</span>
               </Link>
-              <Badge variant="secondary">Dashboard</Badge>
+              <Badge variant="secondary">{t("navigation.dashboard")}</Badge>
             </div>
             <div className="flex items-center gap-2">
+              <LanguageSwitcher variant="compact" />
               <ThemeToggle />
               <Button variant="ghost" size="sm" onClick={logout}>
                 <LogOut className="w-4 h-4 mr-2" />
-                Sign Out
+                {t("navigation.signout")}
               </Button>
             </div>
           </div>
@@ -89,63 +93,63 @@ export default function DashboardPage() {
                 <Link href="/dashboard/personal" className="w-full">
                   <Button variant="ghost" className="w-full justify-start">
                     <User className="w-4 h-4 mr-3" />
-                    Personal Info
+                    {t("navigation.personal")}
                   </Button>
                 </Link>
                 <Link href="/dashboard/experience" className="w-full">
                   <Button variant="ghost" className="w-full justify-start">
                     <Briefcase className="w-4 h-4 mr-3" />
-                    Experience
+                    {t("navigation.experience")}
                   </Button>
                 </Link>
                 <Link href="/dashboard/education" className="w-full">
                   <Button variant="ghost" className="w-full justify-start">
                     <GraduationCap className="w-4 h-4 mr-3" />
-                    Education
+                    {t("navigation.education")}
                   </Button>
                 </Link>
                 <Link href="/dashboard/skills" className="w-full">
                   <Button variant="ghost" className="w-full justify-start">
                     <Code className="w-4 h-4 mr-3" />
-                    Skills
+                    {t("navigation.skills")}
                   </Button>
                 </Link>
                 <Link href="/dashboard/projects" className="w-full">
                   <Button variant="ghost" className="w-full justify-start">
                     <FileText className="w-4 h-4 mr-3" />
-                    Projects
+                    {t("navigation.projects")}
                   </Button>
                 </Link>
                 <div className="border-t border-border pt-2 mt-4">
                   <Link href="/dashboard/ai-tools" className="w-full">
                     <Button variant="outline" className="w-full justify-start mb-2 bg-transparent">
                       <Brain className="w-4 h-4 mr-3" />
-                      AI Tools
+                      {t("navigation.aiTools")}
                       <Sparkles className="w-3 h-3 ml-auto" />
                     </Button>
                   </Link>
                   <Link href="/dashboard/export" className="w-full">
                     <Button variant="outline" className="w-full justify-start mb-2 bg-transparent">
                       <Download className="w-4 h-4 mr-3" />
-                      Export CV
+                      {t("navigation.export")}
                     </Button>
                   </Link>
                   <Link href="/dashboard/preview" className="w-full">
-                    <Button variant="outline" className="w-full justify-start bg-transparent">
+                    <Button variant="outline" className="w-full justify-start mb-2 bg-transparent">
                       <Globe className="w-4 h-4 mr-3" />
-                      Preview Portfolio
+                      {t("navigation.preview")}
                     </Button>
                   </Link>
                   <Link href="/dashboard/deploy" className="w-full">
-                    <Button variant="outline" className="w-full justify-start bg-transparent">
+                    <Button variant="outline" className="w-full justify-start mb-2 bg-transparent">
                       <Rocket className="w-4 h-4 mr-3" />
-                      Deploy Portfolio
+                      {t("navigation.deploy")}
                     </Button>
                   </Link>
                   <Link href="/dashboard/settings" className="w-full mt-2">
                     <Button variant="ghost" className="w-full justify-start">
                       <Settings className="w-4 h-4 mr-3" />
-                      Settings
+                      {t("navigation.settings")}
                     </Button>
                   </Link>
                 </div>
@@ -156,7 +160,9 @@ export default function DashboardPage() {
           {/* Main Content */}
           <div className="lg:col-span-3">
             <div className="mb-8">
-              <h1 className="font-sans text-3xl font-bold mb-2">Welcome back, {user.name}!</h1>
+              <h1 className="font-sans text-3xl font-bold mb-2">
+                {t("dashboard.welcome")}, {user.name}!
+              </h1>
               <p className="font-serif text-muted-foreground">Manage your portfolio sections and track your progress</p>
             </div>
 
@@ -164,7 +170,7 @@ export default function DashboardPage() {
             <div className="grid md:grid-cols-3 gap-6 mb-8">
               <Card>
                 <CardHeader className="pb-3">
-                  <CardTitle className="font-sans text-sm font-medium">Portfolio Completion</CardTitle>
+                  <CardTitle className="font-sans text-sm font-medium">{t("dashboard.portfolioCompletion")}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold text-primary">65%</div>
@@ -175,7 +181,7 @@ export default function DashboardPage() {
               </Card>
               <Card>
                 <CardHeader className="pb-3">
-                  <CardTitle className="font-sans text-sm font-medium">Projects Added</CardTitle>
+                  <CardTitle className="font-sans text-sm font-medium">{t("dashboard.stats.totalProjects")}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">3</div>
@@ -184,7 +190,7 @@ export default function DashboardPage() {
               </Card>
               <Card>
                 <CardHeader className="pb-3">
-                  <CardTitle className="font-sans text-sm font-medium">Portfolio Views</CardTitle>
+                  <CardTitle className="font-sans text-sm font-medium">{t("dashboard.stats.profileViews")}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">127</div>
@@ -203,7 +209,7 @@ export default function DashboardPage() {
                         <User className="w-5 h-5 text-primary" />
                       </div>
                       <div>
-                        <CardTitle className="font-sans">Personal Information</CardTitle>
+                        <CardTitle className="font-sans">{t("navigation.personal")}</CardTitle>
                         <CardDescription className="font-serif">Basic details and bio</CardDescription>
                       </div>
                     </div>
@@ -212,7 +218,7 @@ export default function DashboardPage() {
                 </CardHeader>
                 <CardContent>
                   <Link href="/dashboard/personal">
-                    <Button className="w-full">Edit Details</Button>
+                    <Button className="w-full">{t("common.edit")} Details</Button>
                   </Link>
                 </CardContent>
               </Card>
@@ -225,7 +231,7 @@ export default function DashboardPage() {
                         <Briefcase className="w-5 h-5 text-primary" />
                       </div>
                       <div>
-                        <CardTitle className="font-sans">Work Experience</CardTitle>
+                        <CardTitle className="font-sans">{t("navigation.experience")}</CardTitle>
                         <CardDescription className="font-serif">Professional history</CardDescription>
                       </div>
                     </div>
@@ -236,7 +242,7 @@ export default function DashboardPage() {
                   <Link href="/dashboard/experience">
                     <Button className="w-full">
                       <Plus className="w-4 h-4 mr-2" />
-                      Add Experience
+                      {t("common.add")} {t("navigation.experience")}
                     </Button>
                   </Link>
                 </CardContent>
@@ -250,7 +256,7 @@ export default function DashboardPage() {
                         <GraduationCap className="w-5 h-5 text-primary" />
                       </div>
                       <div>
-                        <CardTitle className="font-sans">Education</CardTitle>
+                        <CardTitle className="font-sans">{t("navigation.education")}</CardTitle>
                         <CardDescription className="font-serif">Academic background</CardDescription>
                       </div>
                     </div>
@@ -261,7 +267,7 @@ export default function DashboardPage() {
                   <Link href="/dashboard/education">
                     <Button className="w-full">
                       <Plus className="w-4 h-4 mr-2" />
-                      Add Education
+                      {t("common.add")} {t("navigation.education")}
                     </Button>
                   </Link>
                 </CardContent>
@@ -275,7 +281,7 @@ export default function DashboardPage() {
                         <Code className="w-5 h-5 text-primary" />
                       </div>
                       <div>
-                        <CardTitle className="font-sans">Skills</CardTitle>
+                        <CardTitle className="font-sans">{t("navigation.skills")}</CardTitle>
                         <CardDescription className="font-serif">Technical abilities</CardDescription>
                       </div>
                     </div>
@@ -286,7 +292,7 @@ export default function DashboardPage() {
                   <Link href="/dashboard/skills">
                     <Button className="w-full">
                       <Plus className="w-4 h-4 mr-2" />
-                      Add Skills
+                      {t("common.add")} {t("navigation.skills")}
                     </Button>
                   </Link>
                 </CardContent>
@@ -300,7 +306,7 @@ export default function DashboardPage() {
                         <FileText className="w-5 h-5 text-primary" />
                       </div>
                       <div>
-                        <CardTitle className="font-sans">Projects</CardTitle>
+                        <CardTitle className="font-sans">{t("navigation.projects")}</CardTitle>
                         <CardDescription className="font-serif">Portfolio showcase</CardDescription>
                       </div>
                     </div>
@@ -311,7 +317,7 @@ export default function DashboardPage() {
                   <Link href="/dashboard/projects">
                     <Button className="w-full">
                       <Plus className="w-4 h-4 mr-2" />
-                      Add Project
+                      {t("common.add")} Project
                     </Button>
                   </Link>
                 </CardContent>
@@ -326,7 +332,7 @@ export default function DashboardPage() {
                       </div>
                       <div>
                         <CardTitle className="font-sans flex items-center gap-2">
-                          AI Tools
+                          {t("navigation.aiTools")}
                           <Sparkles className="w-4 h-4 text-primary" />
                         </CardTitle>
                         <CardDescription className="font-serif">
@@ -341,7 +347,7 @@ export default function DashboardPage() {
                   <Link href="/dashboard/ai-tools">
                     <Button className="w-full">
                       <Brain className="w-4 h-4 mr-2" />
-                      Explore AI Tools
+                      Explore {t("navigation.aiTools")}
                     </Button>
                   </Link>
                 </CardContent>
@@ -355,7 +361,7 @@ export default function DashboardPage() {
                         <Download className="w-5 h-5 text-accent" />
                       </div>
                       <div>
-                        <CardTitle className="font-sans">Export CV</CardTitle>
+                        <CardTitle className="font-sans">{t("navigation.export")} CV</CardTitle>
                         <CardDescription className="font-serif">Generate PDF and Word documents</CardDescription>
                       </div>
                     </div>
@@ -366,7 +372,7 @@ export default function DashboardPage() {
                   <Link href="/dashboard/export">
                     <Button className="w-full">
                       <Download className="w-4 h-4 mr-2" />
-                      Export Documents
+                      {t("navigation.export")} Documents
                     </Button>
                   </Link>
                 </CardContent>
@@ -380,7 +386,7 @@ export default function DashboardPage() {
                         <Globe className="w-5 h-5 text-primary" />
                       </div>
                       <div>
-                        <CardTitle className="font-sans">Portfolio Preview</CardTitle>
+                        <CardTitle className="font-sans">Portfolio {t("navigation.preview")}</CardTitle>
                         <CardDescription className="font-serif">See how it looks</CardDescription>
                       </div>
                     </div>
@@ -404,18 +410,18 @@ export default function DashboardPage() {
                         <Rocket className="w-5 h-5 text-accent" />
                       </div>
                       <div>
-                        <CardTitle className="font-sans">Deploy Portfolio</CardTitle>
+                        <CardTitle className="font-sans">{t("navigation.deploy")} Portfolio</CardTitle>
                         <CardDescription className="font-serif">Make it live with custom subdomain</CardDescription>
                       </div>
                     </div>
-                    <Badge className="bg-accent text-accent-foreground">Deploy</Badge>
+                    <Badge className="bg-accent text-accent-foreground">{t("navigation.deploy")}</Badge>
                   </div>
                 </CardHeader>
                 <CardContent>
                   <Link href="/dashboard/deploy">
                     <Button className="w-full">
                       <Rocket className="w-4 h-4 mr-2" />
-                      Deploy Now
+                      {t("navigation.deploy")} Now
                     </Button>
                   </Link>
                 </CardContent>

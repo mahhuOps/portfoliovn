@@ -1,0 +1,147 @@
+{
+  "common": {
+    "loading": "Đang tải...",
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "edit": "Chỉnh sửa",
+    "delete": "Xóa",
+    "add": "Thêm",
+    "back": "Quay lại",
+    "next": "Tiếp theo",
+    "previous": "Trước đó",
+    "search": "Tìm kiếm",
+    "filter": "Lọc",
+    "export": "Xuất",
+    "import": "Nhập"
+  },
+  "navigation": {
+    "home": "Trang chủ",
+    "dashboard": "Bảng điều khiển",
+    "signin": "Đăng nhập",
+    "signup": "Đăng ký",
+    "signout": "Đăng xuất",
+    "personal": "Thông tin cá nhân",
+    "projects": "Dự án",
+    "experience": "Kinh nghiệm",
+    "education": "Học vấn",
+    "skills": "Kỹ năng",
+    "aiTools": "Công cụ AI",
+    "export": "Xuất file",
+    "deploy": "Triển khai",
+    "preview": "Xem trước",
+    "settings": "Cài đặt",
+    "admin": "Quản trị"
+  },
+  "auth": {
+    "signin": {
+      "title": "Đăng nhập tài khoản",
+      "subtitle": "Nhập thông tin đăng nhập để truy cập bảng điều khiển",
+      "email": "Địa chỉ email",
+      "password": "Mật khẩu",
+      "button": "Đăng nhập",
+      "demoUser": "Demo người dùng",
+      "demoAdmin": "Demo quản trị",
+      "noAccount": "Chưa có tài khoản?",
+      "signupLink": "Đăng ký tại đây",
+      "success": "Đăng nhập thành công!",
+      "errors": {
+        "emailRequired": "Email là bắt buộc",
+        "emailInvalid": "Vui lòng nhập địa chỉ email hợp lệ",
+        "passwordRequired": "Mật khẩu là bắt buộc",
+        "passwordShort": "Mật khẩu phải có ít nhất 6 ký tự",
+        "invalidCredentials": "Email hoặc mật khẩu không đúng",
+        "networkError": "Lỗi mạng. Vui lòng thử lại."
+      }
+    },
+    "signup": {
+      "title": "Tạo tài khoản mới",
+      "subtitle": "Tham gia với chúng tôi để tạo và quản lý portfolio chuyên nghiệp",
+      "name": "Họ và tên",
+      "email": "Địa chỉ email",
+      "password": "Mật khẩu",
+      "confirmPassword": "Xác nhận mật khẩu",
+      "button": "Tạo tài khoản",
+      "hasAccount": "Đã có tài khoản?",
+      "signinLink": "Đăng nhập tại đây",
+      "success": "Tạo tài khoản thành công!",
+      "errors": {
+        "nameRequired": "Họ và tên là bắt buộc",
+        "emailRequired": "Email là bắt buộc",
+        "emailInvalid": "Vui lòng nhập địa chỉ email hợp lệ",
+        "passwordRequired": "Mật khẩu là bắt buộc",
+        "passwordShort": "Mật khẩu phải có ít nhất 6 ký tự",
+        "passwordMismatch": "Mật khẩu không khớp",
+        "emailExists": "Email đã tồn tại",
+        "networkError": "Lỗi mạng. Vui lòng thử lại."
+      }
+    }
+  },
+  "homepage": {
+    "hero": {
+      "title": "Xây dựng Portfolio Chuyên nghiệp",
+      "subtitle": "Tạo portfolio ấn tượng với công cụ AI, tên miền tùy chỉnh và triển khai dễ dàng",
+      "getStarted": "Bắt đầu",
+      "startBuilding": "Tạo miễn phí"
+    },
+    "features": {
+      "title": "Mọi thứ bạn cần",
+      "aiPowered": {
+        "title": "Công cụ AI",
+        "description": "Nhập liệu bằng giọng nói, trích xuất tài liệu và khớp công việc thông minh"
+      },
+      "customDomains": {
+        "title": "Tên miền tùy chỉnh",
+        "description": "Triển khai portfolio của bạn lên subdomain tùy chỉnh chỉ với một cú nhấp chuột"
+      },
+      "multiLanguage": {
+        "title": "Hỗ trợ đa ngôn ngữ",
+        "description": "Hỗ trợ sẵn tiếng Việt và tiếng Anh, dễ dàng mở rộng"
+      },
+      "professionalExport": {
+        "title": "Xuất chuyên nghiệp",
+        "description": "Xuất portfolio dưới dạng PDF hoặc Word với nhiều mẫu thiết kế"
+      },
+      "realTimePreview": {
+        "title": "Xem trước thời gian thực",
+        "description": "Xem thay đổi ngay lập tức với tính năng xem trước trực tiếp"
+      },
+      "secureStorage": {
+        "title": "Lưu trữ an toàn",
+        "description": "Dữ liệu của bạn được lưu trữ an toàn với tích hợp Firebase và sao lưu"
+      }
+    },
+    "cta": {
+      "title": "Sẵn sàng xây dựng Portfolio?",
+      "subtitle": "Tham gia cùng hàng nghìn chuyên gia tin tưởng nền tảng của chúng tôi",
+      "button": "Bắt đầu ngay"
+    }
+  },
+  "dashboard": {
+    "welcome": "Chào mừng trở lại",
+    "portfolioCompletion": "Hoàn thành Portfolio",
+    "quickActions": "Thao tác nhanh",
+    "recentActivity": "Hoạt động gần đây",
+    "stats": {
+      "totalProjects": "Tổng dự án",
+      "profileViews": "Lượt xem",
+      "exportCount": "Lượt xuất",
+      "lastUpdated": "Cập nhật lần cuối"
+    }
+  },
+  "settings": {
+    "title": "Cài đặt",
+    "language": {
+      "title": "Ngôn ngữ",
+      "description": "Chọn ngôn ngữ ưa thích của bạn",
+      "english": "English",
+      "vietnamese": "Tiếng Việt"
+    },
+    "theme": {
+      "title": "Giao diện",
+      "description": "Chọn giao diện ưa thích của bạn",
+      "light": "Sáng",
+      "dark": "Tối",
+      "system": "Hệ thống"
+    }
+  }
+}

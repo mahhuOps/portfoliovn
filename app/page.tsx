@@ -1,10 +1,19 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ArrowRight, Sparkles, Globe, FileText, Brain, Shield, Zap } from "lucide-react"
+import { ArrowRight, Sparkles, Globe, FileText, Brain, Shield, Zap, LogOut, User } from "lucide-react"
 import Link from "next/link"
+import { useAuth } from "@/components/auth/auth-provider"
+import { useTranslations } from "next-intl"
+import { LanguageSwitcher } from "@/components/language-switcher"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 export default function HomePage() {
+  const { user, logout } = useAuth()
+  const t = useTranslations()
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -19,22 +28,41 @@ export default function HomePage() {
             </div>
             <nav className="hidden md:flex items-center gap-6">
               <Link href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
-                Features
+                {t("homepage.features.title")}
               </Link>
               <Link href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors">
                 Pricing
               </Link>
-              <Link href="/auth/signin">
-                <Button variant="outline" size="sm">
-                  Sign In
-                </Button>
-              </Link>
-              <Link href="/auth/signin">
-                <Button size="sm">
-                  Get Started
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              </Link>
+              <LanguageSwitcher variant="compact" />
+              <ThemeToggle />
+              {user ? (
+                <>
+                  <Link href="/dashboard">
+                    <Button variant="outline" size="sm">
+                      <User className="w-4 h-4 mr-2" />
+                      {t("navigation.dashboard")}
+                    </Button>
+                  </Link>
+                  <Button variant="ghost" size="sm" onClick={logout}>
+                    <LogOut className="w-4 h-4 mr-2" />
+                    {t("navigation.signout")}
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Link href="/auth/signin">
+                    <Button variant="outline" size="sm">
+                      {t("navigation.signin")}
+                    </Button>
+                  </Link>
+                  <Link href="/auth/signin">
+                    <Button size="sm">
+                      {t("homepage.hero.getStarted")}
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </Link>
+                </>
+              )}
             </nav>
           </div>
         </div>
@@ -48,16 +76,13 @@ export default function HomePage() {
             AI-Powered Portfolio Builder
           </Badge>
           <h1 className="font-sans text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            Build Your Professional Portfolio in Minutes
+            {t("homepage.hero.title")}
           </h1>
-          <p className="font-serif text-xl text-muted-foreground mb-8 leading-relaxed">
-            Create stunning portfolios with AI assistance, deploy to custom domains, and export professional CVs.
-            Perfect for developers, designers, and professionals worldwide.
-          </p>
+          <p className="font-serif text-xl text-muted-foreground mb-8 leading-relaxed">{t("homepage.hero.subtitle")}</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/auth/signin">
               <Button size="lg" className="text-lg px-8">
-                Start Building Free
+                {t("homepage.hero.startBuilding")}
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>
@@ -74,7 +99,10 @@ export default function HomePage() {
       <section id="features" className="py-20 px-4 bg-muted/30">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-16">
-            <h2 className="font-sans text-4xl font-bold mb-4">Everything You Need</h2>
+            <h2 className="font-sans text-4xl font-bold mb-4">
+              {/* Use translation for features title */}
+              {t("homepage.features.title")}
+            </h2>
             <p className="font-serif text-xl text-muted-foreground">
               Powerful features to create, manage, and deploy your professional portfolio
             </p>
@@ -86,10 +114,11 @@ export default function HomePage() {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <Brain className="w-6 h-6 text-primary" />
                 </div>
-                <CardTitle className="font-sans">AI-Powered Content</CardTitle>
-                <CardDescription className="font-serif">
-                  Voice-to-text input, document extraction, and job matching with advanced AI
-                </CardDescription>
+                <CardTitle className="font-sans">
+                  {/* Use translation for AI-Powered title */}
+                  {t("homepage.features.aiPowered.title")}
+                </CardTitle>
+                <CardDescription className="font-serif">{t("homepage.features.aiPowered.description")}</CardDescription>
               </CardHeader>
             </Card>
 
@@ -98,9 +127,12 @@ export default function HomePage() {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <Globe className="w-6 h-6 text-primary" />
                 </div>
-                <CardTitle className="font-sans">Custom Domains</CardTitle>
+                <CardTitle className="font-sans">
+                  {/* Use translation for Custom Domains title */}
+                  {t("homepage.features.customDomains.title")}
+                </CardTitle>
                 <CardDescription className="font-serif">
-                  Deploy to username.domain.com or use your own custom domain
+                  {t("homepage.features.customDomains.description")}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -110,9 +142,12 @@ export default function HomePage() {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <FileText className="w-6 h-6 text-primary" />
                 </div>
-                <CardTitle className="font-sans">Professional CV Export</CardTitle>
+                <CardTitle className="font-sans">
+                  {/* Use translation for Professional Export title */}
+                  {t("homepage.features.professionalExport.title")}
+                </CardTitle>
                 <CardDescription className="font-serif">
-                  Generate PDF and Word documents with professional formatting
+                  {t("homepage.features.professionalExport.description")}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -122,9 +157,12 @@ export default function HomePage() {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <Zap className="w-6 h-6 text-primary" />
                 </div>
-                <CardTitle className="font-sans">Multi-language Support</CardTitle>
+                <CardTitle className="font-sans">
+                  {/* Use translation for Multi-language title */}
+                  {t("homepage.features.multiLanguage.title")}
+                </CardTitle>
                 <CardDescription className="font-serif">
-                  Built-in support for Vietnamese and English, easily expandable
+                  {t("homepage.features.multiLanguage.description")}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -134,9 +172,12 @@ export default function HomePage() {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <Shield className="w-6 h-6 text-primary" />
                 </div>
-                <CardTitle className="font-sans">Secure & Fast</CardTitle>
+                <CardTitle className="font-sans">
+                  {/* Use translation for Real-time Preview title */}
+                  {t("homepage.features.realTimePreview.title")}
+                </CardTitle>
                 <CardDescription className="font-serif">
-                  HTTPS by default, spam protection, and lightning-fast performance
+                  {t("homepage.features.realTimePreview.description")}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -146,9 +187,12 @@ export default function HomePage() {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <Sparkles className="w-6 h-6 text-primary" />
                 </div>
-                <CardTitle className="font-sans">Beautiful Themes</CardTitle>
+                <CardTitle className="font-sans">
+                  {/* Use translation for Secure Storage title */}
+                  {t("homepage.features.secureStorage.title")}
+                </CardTitle>
                 <CardDescription className="font-serif">
-                  Light and dark modes, responsive design, and customizable layouts
+                  {t("homepage.features.secureStorage.description")}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -159,13 +203,14 @@ export default function HomePage() {
       {/* CTA Section */}
       <section className="py-20 px-4">
         <div className="container mx-auto text-center max-w-3xl">
-          <h2 className="font-sans text-4xl font-bold mb-6">Ready to Build Your Portfolio?</h2>
-          <p className="font-serif text-xl text-muted-foreground mb-8">
-            Join thousands of professionals who trust Portfolio Manager to showcase their work
-          </p>
+          <h2 className="font-sans text-4xl font-bold mb-6">
+            {/* Use translation for CTA title */}
+            {t("homepage.cta.title")}
+          </h2>
+          <p className="font-serif text-xl text-muted-foreground mb-8">{t("homepage.cta.subtitle")}</p>
           <Link href="/auth/signin">
             <Button size="lg" className="text-lg px-8">
-              Get Started Now
+              {t("homepage.cta.button")}
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
           </Link>

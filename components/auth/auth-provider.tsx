@@ -11,7 +11,7 @@ import {
   updateProfile,
 } from "firebase/auth"
 import { doc, setDoc, getDoc } from "firebase/firestore"
-import { auth, db } from "@/lib/firebase"
+import { auth, db, checkFirebaseConnection, isFirebaseOnline } from "@/lib/firebase"
 
 interface UserProfile {
   id: string
@@ -19,6 +19,13 @@ interface UserProfile {
   name: string
   role: "user" | "admin"
   createdAt: Date
+  portfolioData: {
+    personalInfo: {}
+    projects: []
+    experience: []
+    education: []
+    skills: []
+  }
 }
 
 interface AuthContextType {
@@ -34,6 +41,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export function FirebaseAuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<UserProfile | null>(null)
   const [loading, setLoading] = useState(true)
+  const [hasAttemptedFirestore, setHasAttemptedFirestore] = useState(false)
 
   useEffect(() => {
     if (!auth) {
@@ -44,51 +52,71 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
 
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
-        if (!db) {
-          console.log("[v0] Firestore not initialized - using basic user data")
-          setUser({
-            id: firebaseUser.uid,
-            email: firebaseUser.email!,
-            name: firebaseUser.displayName || "",
-            role: "user",
-            createdAt: new Date(),
-          })
+        const basicUserData = {
+          id: firebaseUser.uid,
+          email: firebaseUser.email!,
+          name: firebaseUser.displayName || "",
+          role: "user" as const,
+          createdAt: new Date(),
+          portfolioData: {
+            personalInfo: {},
+            projects: [],
+            experience: [],
+            education: [],
+            skills: [],
+          },
+        }
+
+        if (!db || hasAttemptedFirestore) {
+          if (!hasAttemptedFirestore) {
+            console.log("[v0] Firestore not initialized - using basic user data")
+          }
+          setUser(basicUserData)
           setLoading(false)
           return
         }
 
-        // Get user profile from Firestore
+        setHasAttemptedFirestore(true)
+        const isConnected = await checkFirebaseConnection()
+        if (!isConnected) {
+          console.log("[v0] Working offline - using basic user data")
+          setUser(basicUserData)
+          setLoading(false)
+          return
+        }
+
         try {
-          const userDoc = await getDoc(doc(db, "users", firebaseUser.uid))
+          const userDoc = await Promise.race([
+            getDoc(doc(db, "users", firebaseUser.uid)),
+            new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 5000)),
+          ])
+
           if (userDoc.exists()) {
             const userData = userDoc.data()
             setUser({
-              id: firebaseUser.uid,
-              email: firebaseUser.email!,
+              ...basicUserData,
               name: userData.name || firebaseUser.displayName || "",
               role: userData.role || "user",
               createdAt: userData.createdAt?.toDate() || new Date(),
             })
+          } else {
+            setUser(basicUserData)
           }
-        } catch (error) {
-          console.error("[v0] Error fetching user data:", error)
-          // Fallback to basic user data
-          setUser({
-            id: firebaseUser.uid,
-            email: firebaseUser.email!,
-            name: firebaseUser.displayName || "",
-            role: "user",
-            createdAt: new Date(),
-          })
+        } catch (error: any) {
+          if (error.message === "timeout") {
+            console.log("[v0] Firestore connection timeout - using basic user data")
+          }
+          setUser(basicUserData)
         }
       } else {
         setUser(null)
+        setHasAttemptedFirestore(false) // Reset on logout
       }
       setLoading(false)
     })
 
     return () => unsubscribe()
-  }, [])
+  }, [hasAttemptedFirestore])
 
   const signIn = async (email: string, password: string) => {
     if (!auth) {
@@ -113,23 +141,37 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
       // Update display name
       await updateProfile(firebaseUser, { displayName: name })
 
-      if (db) {
-        // Create user profile in Firestore
-        const userProfile = {
-          name,
-          email,
-          role: email === "admin@example.com" ? "admin" : "user",
-          createdAt: new Date(),
-          portfolioData: {
-            personalInfo: {},
-            projects: [],
-            experience: [],
-            education: [],
-            skills: [],
-          },
-        }
+      if (db && isFirebaseOnline()) {
+        try {
+          const userProfile = {
+            name,
+            email,
+            role: email === "admin@example.com" ? "admin" : "user",
+            createdAt: new Date(),
+            portfolioData: {
+              personalInfo: {},
+              projects: [],
+              experience: [],
+              education: [],
+              skills: [],
+            },
+          }
 
-        await setDoc(doc(db, "users", firebaseUser.uid), userProfile)
+          // Add timeout to prevent hanging
+          await Promise.race([
+            setDoc(doc(db, "users", firebaseUser.uid), userProfile),
+            new Promise((_, reject) => setTimeout(() => reject(new Error("Firestore timeout")), 3000)),
+          ])
+
+          console.log("[v0] User profile saved to Firestore successfully")
+        } catch (error) {
+          console.log(
+            "[v0] Could not save user profile to Firestore (timeout/offline), user account created successfully",
+          )
+          // Don't throw error here - user account is already created in Firebase Auth
+        }
+      } else {
+        console.log("[v0] Firestore offline - user account created in Firebase Auth only")
       }
     } catch (error: any) {
       throw new Error(error.message)

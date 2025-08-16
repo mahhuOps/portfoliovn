@@ -13,20 +13,33 @@ import { Sparkles, User, Shield } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useToast } from "@/hooks/use-toast"
-import { useAuthLocal } from "@/components/auth/local-auth-provider"
+import { useTranslations } from "next-intl"
+import { LanguageSwitcher } from "@/components/language-switcher"
 
 export default function SignInPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
-  const { signIn, user } = useAuth()
+  const { signIn, user, loading: authLoading } = useAuth()
   const router = useRouter()
   const { toast } = useToast()
-  const { signInLocal } = useAuthLocal()
+  const t = useTranslations()
 
   useEffect(() => {
-    if (user) router.push("/dashboard")
-  }, [user])
+    if (!authLoading && user) {
+      router.push("/dashboard")
+    }
+  }, [user, authLoading, router])
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    )
+  }
+
+  if (user) return null
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -34,8 +47,8 @@ export default function SignInPage() {
     if (!email.trim()) {
       toast({
         variant: "destructive",
-        title: "Lỗi đăng nhập",
-        description: "Vui lòng nhập email của bạn.",
+        title: t("auth.signin.errors.emailRequired"),
+        description: t("auth.signin.errors.emailRequired"),
       })
       return
     }
@@ -43,8 +56,8 @@ export default function SignInPage() {
     if (!password.trim()) {
       toast({
         variant: "destructive",
-        title: "Lỗi đăng nhập",
-        description: "Vui lòng nhập mật khẩu của bạn.",
+        title: t("auth.signin.errors.passwordRequired"),
+        description: t("auth.signin.errors.passwordRequired"),
       })
       return
     }
@@ -53,23 +66,25 @@ export default function SignInPage() {
     try {
       await signIn(email, password)
       toast({
-        title: "Đăng nhập thành công!",
-        description: "Chào mừng bạn quay trở lại.",
+        title: t("auth.signin.success"),
+        description: t("auth.signin.success"),
       })
-      router.push("/dashboard")
+      setTimeout(() => {
+        router.push("/dashboard")
+      }, 500)
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Đã xảy ra lỗi không xác định"
-      let displayMessage = "Đã xảy ra lỗi khi đăng nhập. Vui lòng thử lại."
+      const errorMessage = error instanceof Error ? error.message : "Unknown error"
+      let displayMessage = t("auth.signin.errors.networkError")
 
       if (errorMessage.includes("Invalid email or password")) {
-        displayMessage = "Email hoặc mật khẩu không chính xác. Vui lòng kiểm tra lại."
+        displayMessage = t("auth.signin.errors.invalidCredentials")
       } else if (errorMessage.includes("network") || errorMessage.includes("fetch")) {
-        displayMessage = "Lỗi kết nối mạng. Vui lòng kiểm tra kết nối internet của bạn."
+        displayMessage = t("auth.signin.errors.networkError")
       }
 
       toast({
         variant: "destructive",
-        title: "Lỗi đăng nhập",
+        title: "Error",
         description: displayMessage,
       })
       console.error("Sign in error:", error)
@@ -82,18 +97,20 @@ export default function SignInPage() {
     setLoading(true)
     try {
       const demoEmail = demoType === "admin" ? "admin@example.com" : "demo@example.com"
-      const demoPassword = demoType === "admin" ? "admin" : "demo"
-      await signInLocal(demoEmail, demoPassword)
+      const demoPassword = "demo123"
+      await signIn(demoEmail, demoPassword)
       toast({
-        title: "Đăng nhập demo thành công!",
-        description: `Chào mừng bạn với tài khoản ${demoType === "admin" ? "quản trị viên" : "người dùng"} demo.`,
+        title: t("auth.signin.success"),
+        description: `${t("auth.signin.success")} ${demoType === "admin" ? t("navigation.admin") : t("navigation.signin")}`,
       })
-      router.push("/dashboard")
+      setTimeout(() => {
+        router.push("/dashboard")
+      }, 500)
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Lỗi đăng nhập demo",
-        description: "Không thể đăng nhập với tài khoản demo. Vui lòng thử lại.",
+        title: "Demo Login Error",
+        description: t("auth.signin.errors.networkError"),
       })
       console.error("Demo login error:", error)
     } finally {
@@ -111,24 +128,25 @@ export default function SignInPage() {
             </div>
             <span className="font-sans font-bold text-2xl">Portfolio Manager</span>
           </Link>
+          <div className="flex justify-center mb-4">
+            <LanguageSwitcher variant="compact" />
+          </div>
         </div>
 
         <Card>
           <CardHeader className="text-center">
-            <CardTitle className="font-sans text-2xl">Welcome back</CardTitle>
-            <CardDescription className="font-serif">
-              Sign in to your account to continue building your portfolio
-            </CardDescription>
+            <CardTitle className="font-sans text-2xl">{t("auth.signin.title")}</CardTitle>
+            <CardDescription className="font-serif">{t("auth.signin.subtitle")}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-3 mb-6">
               <Button onClick={() => handleDemoLogin("user")} variant="outline" className="w-full" disabled={loading}>
                 <User className="w-4 h-4 mr-2" />
-                Demo as User
+                {t("auth.signin.demoUser")}
               </Button>
               <Button onClick={() => handleDemoLogin("admin")} variant="outline" className="w-full" disabled={loading}>
                 <Shield className="w-4 h-4 mr-2" />
-                Demo as Admin
+                {t("auth.signin.demoAdmin")}
               </Button>
             </div>
 
@@ -136,37 +154,37 @@ export default function SignInPage() {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t("auth.signin.email")}</Label>
                 <Input
                   id="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
+                  placeholder={t("auth.signin.email")}
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{t("auth.signin.password")}</Label>
                 <Input
                   id="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
+                  placeholder={t("auth.signin.password")}
                   required
                 />
               </div>
               <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? "Signing in..." : "Sign In"}
+                {loading ? `${t("common.loading")}...` : t("auth.signin.button")}
               </Button>
             </form>
 
             <div className="mt-6 text-center">
               <p className="font-serif text-sm text-muted-foreground">
-                Don't have an account?{" "}
+                {t("auth.signin.noAccount")}{" "}
                 <Link href="/auth/signup" className="text-primary hover:underline">
-                  Sign up
+                  {t("auth.signin.signupLink")}
                 </Link>
               </p>
             </div>

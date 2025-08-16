@@ -7,6 +7,8 @@ import { FirebaseAuthProvider } from "@/components/auth/auth-provider"
 import { Toaster } from "@/components/ui/toaster"
 import "./globals.css"
 import { AuthProvider } from "@/components/auth/local-auth-provider"
+import { NextIntlClientProvider } from "next-intl"
+import { getMessages } from "next-intl/server"
 
 const geist = Geist({
   subsets: ["latin"],
@@ -26,11 +28,13 @@ export const metadata: Metadata = {
   generator: "Portfolio Manager",
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const messages = await getMessages()
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -44,11 +48,11 @@ html {
       </head>
       <body className={`${geist.variable} ${manrope.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-          <FirebaseAuthProvider>
-            <AuthProvider>
-              {children}
-            </AuthProvider>
-          </FirebaseAuthProvider>
+          <NextIntlClientProvider messages={messages}>
+            <FirebaseAuthProvider>
+              <AuthProvider>{children}</AuthProvider>
+            </FirebaseAuthProvider>
+          </NextIntlClientProvider>
           <Toaster />
         </ThemeProvider>
       </body>

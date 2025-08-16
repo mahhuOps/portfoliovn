@@ -12,6 +12,8 @@ import { Sparkles } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useToast } from "@/hooks/use-toast"
+import { useTranslations } from "next-intl"
+import { LanguageSwitcher } from "@/components/language-switcher"
 
 export default function SignUpPage() {
   const [name, setName] = useState("")
@@ -19,20 +21,33 @@ export default function SignUpPage() {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [loading, setLoading] = useState(false)
-  const { signUp, user } = useAuth()
+  const { signUp, user, loading: authLoading } = useAuth()
   const router = useRouter()
   const { toast } = useToast()
+  const t = useTranslations()
 
   useEffect(() => {
-    if (user) router.push("/dashboard")
-  }, [user])
+    if (!authLoading && user) {
+      router.push("/dashboard")
+    }
+  }, [user, authLoading, router])
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    )
+  }
+
+  if (user) return null
 
   const validateForm = () => {
     if (!name.trim()) {
       toast({
         variant: "destructive",
-        title: "Lỗi đăng ký",
-        description: "Vui lòng nhập họ và tên của bạn.",
+        title: "Error",
+        description: t("auth.signup.errors.nameRequired"),
       })
       return false
     }
@@ -40,8 +55,8 @@ export default function SignUpPage() {
     if (!email.trim()) {
       toast({
         variant: "destructive",
-        title: "Lỗi đăng ký",
-        description: "Vui lòng nhập email của bạn.",
+        title: "Error",
+        description: t("auth.signup.errors.emailRequired"),
       })
       return false
     }
@@ -50,8 +65,8 @@ export default function SignUpPage() {
     if (!emailRegex.test(email)) {
       toast({
         variant: "destructive",
-        title: "Lỗi đăng ký",
-        description: "Vui lòng nhập email hợp lệ.",
+        title: "Error",
+        description: t("auth.signup.errors.emailInvalid"),
       })
       return false
     }
@@ -59,8 +74,8 @@ export default function SignUpPage() {
     if (!password.trim()) {
       toast({
         variant: "destructive",
-        title: "Lỗi đăng ký",
-        description: "Vui lòng nhập mật khẩu của bạn.",
+        title: "Error",
+        description: t("auth.signup.errors.passwordRequired"),
       })
       return false
     }
@@ -68,8 +83,8 @@ export default function SignUpPage() {
     if (password.length < 6) {
       toast({
         variant: "destructive",
-        title: "Lỗi đăng ký",
-        description: "Mật khẩu phải có ít nhất 6 ký tự.",
+        title: "Error",
+        description: t("auth.signup.errors.passwordShort"),
       })
       return false
     }
@@ -77,8 +92,8 @@ export default function SignUpPage() {
     if (confirmPassword && password !== confirmPassword) {
       toast({
         variant: "destructive",
-        title: "Lỗi đăng ký",
-        description: "Mật khẩu xác nhận không khớp.",
+        title: "Error",
+        description: t("auth.signup.errors.passwordMismatch"),
       })
       return false
     }
@@ -97,23 +112,25 @@ export default function SignUpPage() {
     try {
       await signUp(email, password, name)
       toast({
-        title: "Đăng ký thành công!",
-        description: "Tài khoản của bạn đã được tạo. Chào mừng bạn đến với Portfolio Manager!",
+        title: t("auth.signup.success"),
+        description: t("auth.signup.success"),
       })
-      router.push("/dashboard")
+      setTimeout(() => {
+        router.push("/dashboard")
+      }, 1000)
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Đã xảy ra lỗi không xác định"
-      let displayMessage = "Đã xảy ra lỗi khi tạo tài khoản. Vui lòng thử lại."
+      const errorMessage = error instanceof Error ? error.message : "Unknown error"
+      let displayMessage = t("auth.signup.errors.networkError")
 
       if (errorMessage.includes("Email already exists")) {
-        displayMessage = "Email này đã được sử dụng. Vui lòng sử dụng email khác hoặc đăng nhập."
+        displayMessage = t("auth.signup.errors.emailExists")
       } else if (errorMessage.includes("network") || errorMessage.includes("fetch")) {
-        displayMessage = "Lỗi kết nối mạng. Vui lòng kiểm tra kết nối internet của bạn."
+        displayMessage = t("auth.signup.errors.networkError")
       }
 
       toast({
         variant: "destructive",
-        title: "Lỗi đăng ký",
+        title: "Error",
         description: displayMessage,
       })
       console.error("Sign up error:", error)
@@ -132,70 +149,71 @@ export default function SignUpPage() {
             </div>
             <span className="font-sans font-bold text-2xl">Portfolio Manager</span>
           </Link>
+          <div className="flex justify-center mb-4">
+            <LanguageSwitcher variant="compact" />
+          </div>
         </div>
 
         <Card>
           <CardHeader className="text-center">
-            <CardTitle className="font-sans text-2xl">Create your account</CardTitle>
-            <CardDescription className="font-serif">
-              Join thousands of professionals building amazing portfolios
-            </CardDescription>
+            <CardTitle className="font-sans text-2xl">{t("auth.signup.title")}</CardTitle>
+            <CardDescription className="font-serif">{t("auth.signup.subtitle")}</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Full Name</Label>
+                <Label htmlFor="name">{t("auth.signup.name")}</Label>
                 <Input
                   id="name"
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Enter your full name"
+                  placeholder={t("auth.signup.name")}
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t("auth.signup.email")}</Label>
                 <Input
                   id="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
+                  placeholder={t("auth.signup.email")}
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{t("auth.signup.password")}</Label>
                 <Input
                   id="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Create a password (min 6 characters)"
+                  placeholder={t("auth.signup.password")}
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm Password (Optional)</Label>
+                <Label htmlFor="confirmPassword">{t("auth.signup.confirmPassword")}</Label>
                 <Input
                   id="confirmPassword"
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="Confirm your password"
+                  placeholder={t("auth.signup.confirmPassword")}
                 />
               </div>
               <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? "Creating account..." : "Create Account"}
+                {loading ? `${t("common.loading")}...` : t("auth.signup.button")}
               </Button>
             </form>
 
             <div className="mt-6 text-center">
               <p className="font-serif text-sm text-muted-foreground">
-                Already have an account?{" "}
+                {t("auth.signup.hasAccount")}{" "}
                 <Link href="/auth/signin" className="text-primary hover:underline">
-                  Sign in
+                  {t("auth.signup.signinLink")}
                 </Link>
               </p>
             </div>

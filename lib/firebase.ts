@@ -1,6 +1,6 @@
 import { initializeApp, getApps } from "firebase/app"
 import { getAuth } from "firebase/auth"
-import { getFirestore } from "firebase/firestore"
+import { getFirestore, enableNetwork } from "firebase/firestore"
 import { getStorage } from "firebase/storage"
 
 const firebaseConfig = {
@@ -20,5 +20,30 @@ const app =
 export const auth = app ? getAuth(app) : null
 export const db = app ? getFirestore(app) : null
 export const storage = app ? getStorage(app) : null
+
+let isOnline = true
+let connectionRetries = 0
+const maxRetries = 3
+
+export const checkFirebaseConnection = async (): Promise<boolean> => {
+  if (!db) return false
+
+  try {
+    await enableNetwork(db)
+    isOnline = true
+    connectionRetries = 0
+    return true
+  } catch (error) {
+    console.log("[v0] Firebase connection check failed, working offline")
+    isOnline = false
+    return false
+  }
+}
+
+export const isFirebaseOnline = () => isOnline
+
+if (typeof window !== "undefined" && db) {
+  checkFirebaseConnection()
+}
 
 export default app

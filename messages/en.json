@@ -1,0 +1,147 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "add": "Add",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "import": "Import"
+  },
+  "navigation": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "signin": "Sign In",
+    "signup": "Sign Up",
+    "signout": "Sign Out",
+    "personal": "Personal Info",
+    "projects": "Projects",
+    "experience": "Experience",
+    "education": "Education",
+    "skills": "Skills",
+    "aiTools": "AI Tools",
+    "export": "Export",
+    "deploy": "Deploy",
+    "preview": "Preview",
+    "settings": "Settings",
+    "admin": "Admin"
+  },
+  "auth": {
+    "signin": {
+      "title": "Sign In to Your Account",
+      "subtitle": "Enter your credentials to access your portfolio dashboard",
+      "email": "Email Address",
+      "password": "Password",
+      "button": "Sign In",
+      "demoUser": "Demo as User",
+      "demoAdmin": "Demo as Admin",
+      "noAccount": "Don't have an account?",
+      "signupLink": "Sign up here",
+      "success": "Successfully signed in!",
+      "errors": {
+        "emailRequired": "Email is required",
+        "emailInvalid": "Please enter a valid email address",
+        "passwordRequired": "Password is required",
+        "passwordShort": "Password must be at least 6 characters",
+        "invalidCredentials": "Invalid email or password",
+        "networkError": "Network error. Please try again."
+      }
+    },
+    "signup": {
+      "title": "Create Your Account",
+      "subtitle": "Join us to create and manage your professional portfolio",
+      "name": "Full Name",
+      "email": "Email Address",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "button": "Create Account",
+      "hasAccount": "Already have an account?",
+      "signinLink": "Sign in here",
+      "success": "Account created successfully!",
+      "errors": {
+        "nameRequired": "Full name is required",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Please enter a valid email address",
+        "passwordRequired": "Password is required",
+        "passwordShort": "Password must be at least 6 characters",
+        "passwordMismatch": "Passwords do not match",
+        "emailExists": "Email already exists",
+        "networkError": "Network error. Please try again."
+      }
+    }
+  },
+  "homepage": {
+    "hero": {
+      "title": "Build Your Professional Portfolio",
+      "subtitle": "Create stunning portfolios with AI-powered tools, custom domains, and seamless deployment",
+      "getStarted": "Get Started",
+      "startBuilding": "Start Building Free"
+    },
+    "features": {
+      "title": "Everything You Need",
+      "aiPowered": {
+        "title": "AI-Powered Tools",
+        "description": "Voice-to-text input, document extraction, and intelligent job matching"
+      },
+      "customDomains": {
+        "title": "Custom Domains",
+        "description": "Deploy your portfolio to custom subdomains with one click"
+      },
+      "multiLanguage": {
+        "title": "Multi-language Support",
+        "description": "Built-in support for Vietnamese and English, easily expandable"
+      },
+      "professionalExport": {
+        "title": "Professional Export",
+        "description": "Export your portfolio as PDF or Word documents with multiple templates"
+      },
+      "realTimePreview": {
+        "title": "Real-time Preview",
+        "description": "See your changes instantly with live preview functionality"
+      },
+      "secureStorage": {
+        "title": "Secure Storage",
+        "description": "Your data is safely stored with Firebase integration and backup"
+      }
+    },
+    "cta": {
+      "title": "Ready to Build Your Portfolio?",
+      "subtitle": "Join thousands of professionals who trust our platform",
+      "button": "Get Started Now"
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome back",
+    "portfolioCompletion": "Portfolio Completion",
+    "quickActions": "Quick Actions",
+    "recentActivity": "Recent Activity",
+    "stats": {
+      "totalProjects": "Total Projects",
+      "profileViews": "Profile Views",
+      "exportCount": "Exports",
+      "lastUpdated": "Last Updated"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "language": {
+      "title": "Language",
+      "description": "Choose your preferred language",
+      "english": "English",
+      "vietnamese": "Tiếng Việt"
+    },
+    "theme": {
+      "title": "Theme",
+      "description": "Choose your preferred theme",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    }
+  }
+}
