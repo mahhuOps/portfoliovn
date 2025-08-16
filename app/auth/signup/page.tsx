@@ -12,8 +12,9 @@ import { Sparkles } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useToast } from "@/hooks/use-toast"
-import { useTranslations } from "next-intl"
 import { LanguageSwitcher } from "@/components/language-switcher"
+import { ThemeToggle } from "@/components/theme-toggle"
+import { useTranslations } from "next-intl"
 
 export default function SignUpPage() {
   const [name, setName] = useState("")
@@ -24,7 +25,8 @@ export default function SignUpPage() {
   const { signUp, user, loading: authLoading } = useAuth()
   const router = useRouter()
   const { toast } = useToast()
-  const t = useTranslations()
+  const t = useTranslations("auth")
+  const tCommon = useTranslations("common")
 
   useEffect(() => {
     if (!authLoading && user) {
@@ -46,8 +48,8 @@ export default function SignUpPage() {
     if (!name.trim()) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: t("auth.signup.errors.nameRequired"),
+        title: t("errors.nameRequired"),
+        description: t("errors.nameRequired"),
       })
       return false
     }
@@ -55,8 +57,8 @@ export default function SignUpPage() {
     if (!email.trim()) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: t("auth.signup.errors.emailRequired"),
+        title: t("errors.emailRequired"),
+        description: t("errors.emailRequired"),
       })
       return false
     }
@@ -65,8 +67,8 @@ export default function SignUpPage() {
     if (!emailRegex.test(email)) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: t("auth.signup.errors.emailInvalid"),
+        title: t("errors.invalidEmail"),
+        description: t("errors.invalidEmail"),
       })
       return false
     }
@@ -74,8 +76,8 @@ export default function SignUpPage() {
     if (!password.trim()) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: t("auth.signup.errors.passwordRequired"),
+        title: t("errors.passwordRequired"),
+        description: t("errors.passwordRequired"),
       })
       return false
     }
@@ -83,8 +85,8 @@ export default function SignUpPage() {
     if (password.length < 6) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: t("auth.signup.errors.passwordShort"),
+        title: t("errors.passwordTooShort"),
+        description: t("errors.passwordTooShort"),
       })
       return false
     }
@@ -92,8 +94,8 @@ export default function SignUpPage() {
     if (confirmPassword && password !== confirmPassword) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: t("auth.signup.errors.passwordMismatch"),
+        title: t("errors.passwordsDontMatch"),
+        description: t("errors.passwordsDontMatch"),
       })
       return false
     }
@@ -112,20 +114,20 @@ export default function SignUpPage() {
     try {
       await signUp(email, password, name)
       toast({
-        title: t("auth.signup.success"),
-        description: t("auth.signup.success"),
+        title: t("success.signUpSuccess"),
+        description: t("success.signUpSuccess"),
       })
       setTimeout(() => {
         router.push("/dashboard")
       }, 1000)
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Unknown error"
-      let displayMessage = t("auth.signup.errors.networkError")
+      const errorMessage = error instanceof Error ? error.message : t("errors.networkError")
+      let displayMessage = t("errors.networkError")
 
       if (errorMessage.includes("Email already exists")) {
-        displayMessage = t("auth.signup.errors.emailExists")
+        displayMessage = t("errors.emailAlreadyExists")
       } else if (errorMessage.includes("network") || errorMessage.includes("fetch")) {
-        displayMessage = t("auth.signup.errors.networkError")
+        displayMessage = t("errors.networkError")
       }
 
       toast({
@@ -142,6 +144,11 @@ export default function SignUpPage() {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md">
+        <div className="flex justify-end gap-2 mb-6">
+          <LanguageSwitcher variant="compact" />
+          <ThemeToggle />
+        </div>
+
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
             <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
@@ -149,71 +156,70 @@ export default function SignUpPage() {
             </div>
             <span className="font-sans font-bold text-2xl">Portfolio Manager</span>
           </Link>
-          <div className="flex justify-center mb-4">
-            <LanguageSwitcher variant="compact" />
-          </div>
         </div>
 
         <Card>
           <CardHeader className="text-center">
-            <CardTitle className="font-sans text-2xl">{t("auth.signup.title")}</CardTitle>
-            <CardDescription className="font-serif">{t("auth.signup.subtitle")}</CardDescription>
+            <CardTitle className="font-sans text-2xl">{t("signUp")}</CardTitle>
+            <CardDescription className="font-serif">
+              Join thousands of professionals building amazing portfolios
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name">{t("auth.signup.name")}</Label>
+                <Label htmlFor="name">{t("name")}</Label>
                 <Input
                   id="name"
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder={t("auth.signup.name")}
+                  placeholder={t("name")}
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="email">{t("auth.signup.email")}</Label>
+                <Label htmlFor="email">{t("email")}</Label>
                 <Input
                   id="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder={t("auth.signup.email")}
+                  placeholder={t("email")}
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">{t("auth.signup.password")}</Label>
+                <Label htmlFor="password">{t("password")}</Label>
                 <Input
                   id="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder={t("auth.signup.password")}
+                  placeholder={t("password")}
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">{t("auth.signup.confirmPassword")}</Label>
+                <Label htmlFor="confirmPassword">{t("confirmPassword")}</Label>
                 <Input
                   id="confirmPassword"
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder={t("auth.signup.confirmPassword")}
+                  placeholder={t("confirmPassword")}
                 />
               </div>
               <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? `${t("common.loading")}...` : t("auth.signup.button")}
+                {loading ? `${tCommon("loading")}...` : t("signUp")}
               </Button>
             </form>
 
             <div className="mt-6 text-center">
               <p className="font-serif text-sm text-muted-foreground">
-                {t("auth.signup.hasAccount")}{" "}
+                {t("alreadyHaveAccount")}{" "}
                 <Link href="/auth/signin" className="text-primary hover:underline">
-                  {t("auth.signup.signinLink")}
+                  {t("signIn")}
                 </Link>
               </p>
             </div>

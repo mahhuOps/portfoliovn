@@ -13,8 +13,9 @@ import { Sparkles, User, Shield } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useToast } from "@/hooks/use-toast"
-import { useTranslations } from "next-intl"
 import { LanguageSwitcher } from "@/components/language-switcher"
+import { ThemeToggle } from "@/components/theme-toggle"
+import { useTranslations } from "next-intl"
 
 export default function SignInPage() {
   const [email, setEmail] = useState("")
@@ -23,7 +24,8 @@ export default function SignInPage() {
   const { signIn, user, loading: authLoading } = useAuth()
   const router = useRouter()
   const { toast } = useToast()
-  const t = useTranslations()
+  const t = useTranslations("auth")
+  const tCommon = useTranslations("common")
 
   useEffect(() => {
     if (!authLoading && user) {
@@ -47,8 +49,8 @@ export default function SignInPage() {
     if (!email.trim()) {
       toast({
         variant: "destructive",
-        title: t("auth.signin.errors.emailRequired"),
-        description: t("auth.signin.errors.emailRequired"),
+        title: t("errors.emailRequired"),
+        description: t("errors.emailRequired"),
       })
       return
     }
@@ -56,8 +58,8 @@ export default function SignInPage() {
     if (!password.trim()) {
       toast({
         variant: "destructive",
-        title: t("auth.signin.errors.passwordRequired"),
-        description: t("auth.signin.errors.passwordRequired"),
+        title: t("errors.passwordRequired"),
+        description: t("errors.passwordRequired"),
       })
       return
     }
@@ -66,20 +68,20 @@ export default function SignInPage() {
     try {
       await signIn(email, password)
       toast({
-        title: t("auth.signin.success"),
-        description: t("auth.signin.success"),
+        title: t("success.signInSuccess"),
+        description: t("success.signInSuccess"),
       })
       setTimeout(() => {
         router.push("/dashboard")
       }, 500)
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Unknown error"
-      let displayMessage = t("auth.signin.errors.networkError")
+      const errorMessage = error instanceof Error ? error.message : t("errors.networkError")
+      let displayMessage = t("errors.networkError")
 
       if (errorMessage.includes("Invalid email or password")) {
-        displayMessage = t("auth.signin.errors.invalidCredentials")
+        displayMessage = t("errors.invalidCredentials")
       } else if (errorMessage.includes("network") || errorMessage.includes("fetch")) {
-        displayMessage = t("auth.signin.errors.networkError")
+        displayMessage = t("errors.networkError")
       }
 
       toast({
@@ -100,8 +102,8 @@ export default function SignInPage() {
       const demoPassword = "demo123"
       await signIn(demoEmail, demoPassword)
       toast({
-        title: t("auth.signin.success"),
-        description: `${t("auth.signin.success")} ${demoType === "admin" ? t("navigation.admin") : t("navigation.signin")}`,
+        title: t("success.signInSuccess"),
+        description: t("success.signInSuccess"),
       })
       setTimeout(() => {
         router.push("/dashboard")
@@ -109,8 +111,8 @@ export default function SignInPage() {
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Demo Login Error",
-        description: t("auth.signin.errors.networkError"),
+        title: "Error",
+        description: t("errors.networkError"),
       })
       console.error("Demo login error:", error)
     } finally {
@@ -121,6 +123,11 @@ export default function SignInPage() {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md">
+        <div className="flex justify-end gap-2 mb-6">
+          <LanguageSwitcher variant="compact" />
+          <ThemeToggle />
+        </div>
+
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
             <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
@@ -128,25 +135,24 @@ export default function SignInPage() {
             </div>
             <span className="font-sans font-bold text-2xl">Portfolio Manager</span>
           </Link>
-          <div className="flex justify-center mb-4">
-            <LanguageSwitcher variant="compact" />
-          </div>
         </div>
 
         <Card>
           <CardHeader className="text-center">
-            <CardTitle className="font-sans text-2xl">{t("auth.signin.title")}</CardTitle>
-            <CardDescription className="font-serif">{t("auth.signin.subtitle")}</CardDescription>
+            <CardTitle className="font-sans text-2xl">{t("signIn")}</CardTitle>
+            <CardDescription className="font-serif">
+              Sign in to your account to continue building your portfolio
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-3 mb-6">
               <Button onClick={() => handleDemoLogin("user")} variant="outline" className="w-full" disabled={loading}>
                 <User className="w-4 h-4 mr-2" />
-                {t("auth.signin.demoUser")}
+                {t("signInAsUser")}
               </Button>
               <Button onClick={() => handleDemoLogin("admin")} variant="outline" className="w-full" disabled={loading}>
                 <Shield className="w-4 h-4 mr-2" />
-                {t("auth.signin.demoAdmin")}
+                {t("signInAsAdmin")}
               </Button>
             </div>
 
@@ -154,37 +160,37 @@ export default function SignInPage() {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">{t("auth.signin.email")}</Label>
+                <Label htmlFor="email">{t("email")}</Label>
                 <Input
                   id="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder={t("auth.signin.email")}
+                  placeholder={t("email")}
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">{t("auth.signin.password")}</Label>
+                <Label htmlFor="password">{t("password")}</Label>
                 <Input
                   id="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder={t("auth.signin.password")}
+                  placeholder={t("password")}
                   required
                 />
               </div>
               <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? `${t("common.loading")}...` : t("auth.signin.button")}
+                {loading ? `${tCommon("loading")}...` : t("signIn")}
               </Button>
             </form>
 
             <div className="mt-6 text-center">
               <p className="font-serif text-sm text-muted-foreground">
-                {t("auth.signin.noAccount")}{" "}
+                {t("dontHaveAccount")}{" "}
                 <Link href="/auth/signup" className="text-primary hover:underline">
-                  {t("auth.signin.signupLink")}
+                  {t("signUp")}
                 </Link>
               </p>
             </div>

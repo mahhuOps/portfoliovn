@@ -1,0 +1,116 @@
+{
+  "common": {
+    "loading": "로딩 중...",
+    "save": "저장",
+    "cancel": "취소",
+    "delete": "삭제",
+    "edit": "편집",
+    "add": "추가",
+    "search": "검색",
+    "filter": "필터",
+    "export": "내보내기",
+    "import": "가져오기",
+    "close": "닫기",
+    "back": "뒤로",
+    "next": "다음",
+    "previous": "이전",
+    "submit": "제출",
+    "reset": "재설정",
+    "confirm": "확인",
+    "success": "성공",
+    "error": "오류",
+    "warning": "경고",
+    "info": "정보"
+  },
+  "navigation": {
+    "home": "홈",
+    "dashboard": "대시보드",
+    "personal": "개인 정보",
+    "projects": "프로젝트",
+    "experience": "경력",
+    "education": "학력",
+    "skills": "기술",
+    "export": "내보내기",
+    "deploy": "배포",
+    "preview": "미리보기",
+    "settings": "설정",
+    "aiTools": "AI 도구",
+    "admin": "관리자",
+    "signIn": "로그인",
+    "signOut": "로그아웃",
+    "signUp": "회원가입"
+  },
+  "homepage": {
+    "title": "전문 포트폴리오 만들기",
+    "subtitle": "AI 도구, 커스텀 도메인, 전문 템플릿으로 인상적인 포트폴리오를 구축하세요",
+    "getStarted": "시작하기",
+    "learnMore": "더 알아보기",
+    "features": {
+      "aiPowered": {
+        "title": "AI 기반 생성",
+        "description": "음성-텍스트 변환과 문서 추출을 사용하여 포트폴리오를 더 빠르게 구축하세요"
+      },
+      "customDomains": {
+        "title": "커스텀 도메인",
+        "description": "포트폴리오를 커스텀 서브도메인에 배포하고 세상과 공유하세요"
+      },
+      "professionalTemplates": {
+        "title": "전문 템플릿",
+        "description": "여러 이력서 템플릿 중에서 선택하고 PDF 또는 Word로 내보내세요"
+      },
+      "multiLanguage": {
+        "title": "다국어 지원",
+        "description": "글로벌 오디언스에게 다가가기 위해 여러 언어로 포트폴리오를 만드세요"
+      },
+      "realTimePreview": {
+        "title": "실시간 미리보기",
+        "description": "라이브 미리보기 기능으로 포트폴리오 변경사항을 즉시 확인하세요"
+      },
+      "cloudStorage": {
+        "title": "클라우드 저장소",
+        "description": "데이터가 클라우드에 안전하게 저장되어 어디서나 접근할 수 있습니다"
+      }
+    }
+  },
+  "auth": {
+    "signIn": "로그인",
+    "signUp": "회원가입",
+    "email": "이메일",
+    "password": "비밀번호",
+    "confirmPassword": "비밀번호 확인",
+    "name": "이름",
+    "forgotPassword": "비밀번호를 잊으셨나요?",
+    "dontHaveAccount": "계정이 없으신가요?",
+    "alreadyHaveAccount": "이미 계정이 있으신가요?",
+    "signInWithDemo": "데모 로그인",
+    "signInAsAdmin": "관리자 데모",
+    "signInAsUser": "사용자 데모",
+    "errors": {
+      "invalidEmail": "유효한 이메일 주소를 입력해주세요",
+      "passwordTooShort": "비밀번호는 최소 6자 이상이어야 합니다",
+      "passwordsDontMatch": "비밀번호가 일치하지 않습니다",
+      "emailRequired": "이메일은 필수입니다",
+      "passwordRequired": "비밀번호는 필수입니다",
+      "nameRequired": "이름은 필수입니다",
+      "emailAlreadyExists": "이메일이 이미 존재합니다",
+      "invalidCredentials": "이메일 또는 비밀번호가 잘못되었습니다",
+      "networkError": "네트워크 오류입니다. 다시 시도해주세요."
+    },
+    "success": {
+      "signInSuccess": "로그인 성공!",
+      "signUpSuccess": "계정이 성공적으로 생성되었습니다!"
+    }
+  },
+  "dashboard": {
+    "welcome": "다시 오신 것을 환영합니다",
+    "portfolioCompletion": "포트폴리오 완성도",
+    "quickActions": "빠른 작업",
+    "recentActivity": "최근 활동",
+    "stats": {
+      "profileViews": "프로필 조회수",
+      "projectsCompleted": "완료된 프로젝트",
+      "skillsAdded": "추가된 기술",
+      "exportCount": "내보내기 횟수"
+    }
+  }
+}

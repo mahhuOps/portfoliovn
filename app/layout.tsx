@@ -5,10 +5,9 @@ import { Manrope } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { FirebaseAuthProvider } from "@/components/auth/auth-provider"
 import { Toaster } from "@/components/ui/toaster"
+import { LanguageProvider } from "@/components/language-provider"
 import "./globals.css"
 import { AuthProvider } from "@/components/auth/local-auth-provider"
-import { NextIntlClientProvider } from "next-intl"
-import { getMessages } from "next-intl/server"
 
 const geist = Geist({
   subsets: ["latin"],
@@ -28,13 +27,11 @@ export const metadata: Metadata = {
   generator: "Portfolio Manager",
 }
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const messages = await getMessages()
-
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -48,11 +45,11 @@ html {
       </head>
       <body className={`${geist.variable} ${manrope.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-          <NextIntlClientProvider messages={messages}>
+          <LanguageProvider>
             <FirebaseAuthProvider>
               <AuthProvider>{children}</AuthProvider>
             </FirebaseAuthProvider>
-          </NextIntlClientProvider>
+          </LanguageProvider>
           <Toaster />
         </ThemeProvider>
       </body>

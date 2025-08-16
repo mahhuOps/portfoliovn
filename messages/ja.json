@@ -1,0 +1,116 @@
+{
+  "common": {
+    "loading": "読み込み中...",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "delete": "削除",
+    "edit": "編集",
+    "add": "追加",
+    "search": "検索",
+    "filter": "フィルター",
+    "export": "エクスポート",
+    "import": "インポート",
+    "close": "閉じる",
+    "back": "戻る",
+    "next": "次へ",
+    "previous": "前へ",
+    "submit": "送信",
+    "reset": "リセット",
+    "confirm": "確認",
+    "success": "成功",
+    "error": "エラー",
+    "warning": "警告",
+    "info": "情報"
+  },
+  "navigation": {
+    "home": "ホーム",
+    "dashboard": "ダッシュボード",
+    "personal": "個人情報",
+    "projects": "プロジェクト",
+    "experience": "経験",
+    "education": "学歴",
+    "skills": "スキル",
+    "export": "エクスポート",
+    "deploy": "デプロイ",
+    "preview": "プレビュー",
+    "settings": "設定",
+    "aiTools": "AIツール",
+    "admin": "管理者",
+    "signIn": "サインイン",
+    "signOut": "サインアウト",
+    "signUp": "サインアップ"
+  },
+  "homepage": {
+    "title": "プロフェッショナルなポートフォリオを作成",
+    "subtitle": "AIツール、カスタムドメイン、プロフェッショナルテンプレートで印象的なポートフォリオを構築",
+    "getStarted": "始める",
+    "learnMore": "詳細を見る",
+    "features": {
+      "aiPowered": {
+        "title": "AI駆動の作成",
+        "description": "音声テキスト変換と文書抽出を使用してポートフォリオをより速く構築"
+      },
+      "customDomains": {
+        "title": "カスタムドメイン",
+        "description": "ポートフォリオをカスタムサブドメインにデプロイして世界と共有"
+      },
+      "professionalTemplates": {
+        "title": "プロフェッショナルテンプレート",
+        "description": "複数の履歴書テンプレートから選択してPDFまたはWordにエクスポート"
+      },
+      "multiLanguage": {
+        "title": "多言語サポート",
+        "description": "グローバルオーディエンスにリーチするために複数の言語でポートフォリオを作成"
+      },
+      "realTimePreview": {
+        "title": "リアルタイムプレビュー",
+        "description": "ライブプレビュー機能でポートフォリオの変更を即座に確認"
+      },
+      "cloudStorage": {
+        "title": "クラウドストレージ",
+        "description": "データはクラウドに安全に保存され、どこからでもアクセス可能"
+      }
+    }
+  },
+  "auth": {
+    "signIn": "サインイン",
+    "signUp": "サインアップ",
+    "email": "メール",
+    "password": "パスワード",
+    "confirmPassword": "パスワード確認",
+    "name": "氏名",
+    "forgotPassword": "パスワードをお忘れですか？",
+    "dontHaveAccount": "アカウントをお持ちでないですか？",
+    "alreadyHaveAccount": "すでにアカウントをお持ちですか？",
+    "signInWithDemo": "デモログイン",
+    "signInAsAdmin": "管理者デモ",
+    "signInAsUser": "ユーザーデモ",
+    "errors": {
+      "invalidEmail": "有効なメールアドレスを入力してください",
+      "passwordTooShort": "パスワードは6文字以上である必要があります",
+      "passwordsDontMatch": "パスワードが一致しません",
+      "emailRequired": "メールは必須です",
+      "passwordRequired": "パスワードは必須です",
+      "nameRequired": "名前は必須です",
+      "emailAlreadyExists": "メールは既に存在します",
+      "invalidCredentials": "メールまたはパスワードが無効です",
+      "networkError": "ネットワークエラーです。再試行してください。"
+    },
+    "success": {
+      "signInSuccess": "サインイン成功！",
+      "signUpSuccess": "アカウントが正常に作成されました！"
+    }
+  },
+  "dashboard": {
+    "welcome": "おかえりなさい",
+    "portfolioCompletion": "ポートフォリオ完成度",
+    "quickActions": "クイックアクション",
+    "recentActivity": "最近のアクティビティ",
+    "stats": {
+      "profileViews": "プロフィール閲覧数",
+      "projectsCompleted": "完了したプロジェクト",
+      "skillsAdded": "追加されたスキル",
+      "exportCount": "エクスポート回数"
+    }
+  }
+}

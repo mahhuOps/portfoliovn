@@ -3,117 +3,102 @@
     "loading": "Loading...",
     "save": "Save",
     "cancel": "Cancel",
-    "edit": "Edit",
     "delete": "Delete",
+    "edit": "Edit",
     "add": "Add",
-    "back": "Back",
-    "next": "Next",
-    "previous": "Previous",
     "search": "Search",
     "filter": "Filter",
     "export": "Export",
-    "import": "Import"
+    "import": "Import",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "reset": "Reset",
+    "confirm": "Confirm",
+    "success": "Success",
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Information"
   },
   "navigation": {
     "home": "Home",
     "dashboard": "Dashboard",
-    "signin": "Sign In",
-    "signup": "Sign Up",
-    "signout": "Sign Out",
     "personal": "Personal Info",
     "projects": "Projects",
     "experience": "Experience",
     "education": "Education",
     "skills": "Skills",
-    "aiTools": "AI Tools",
     "export": "Export",
     "deploy": "Deploy",
     "preview": "Preview",
     "settings": "Settings",
-    "admin": "Admin"
-  },
-  "auth": {
-    "signin": {
-      "title": "Sign In to Your Account",
-      "subtitle": "Enter your credentials to access your portfolio dashboard",
-      "email": "Email Address",
-      "password": "Password",
-      "button": "Sign In",
-      "demoUser": "Demo as User",
-      "demoAdmin": "Demo as Admin",
-      "noAccount": "Don't have an account?",
-      "signupLink": "Sign up here",
-      "success": "Successfully signed in!",
-      "errors": {
-        "emailRequired": "Email is required",
-        "emailInvalid": "Please enter a valid email address",
-        "passwordRequired": "Password is required",
-        "passwordShort": "Password must be at least 6 characters",
-        "invalidCredentials": "Invalid email or password",
-        "networkError": "Network error. Please try again."
-      }
-    },
-    "signup": {
-      "title": "Create Your Account",
-      "subtitle": "Join us to create and manage your professional portfolio",
-      "name": "Full Name",
-      "email": "Email Address",
-      "password": "Password",
-      "confirmPassword": "Confirm Password",
-      "button": "Create Account",
-      "hasAccount": "Already have an account?",
-      "signinLink": "Sign in here",
-      "success": "Account created successfully!",
-      "errors": {
-        "nameRequired": "Full name is required",
-        "emailRequired": "Email is required",
-        "emailInvalid": "Please enter a valid email address",
-        "passwordRequired": "Password is required",
-        "passwordShort": "Password must be at least 6 characters",
-        "passwordMismatch": "Passwords do not match",
-        "emailExists": "Email already exists",
-        "networkError": "Network error. Please try again."
-      }
-    }
+    "aiTools": "AI Tools",
+    "admin": "Admin",
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "signUp": "Sign Up"
   },
   "homepage": {
-    "hero": {
-      "title": "Build Your Professional Portfolio",
-      "subtitle": "Create stunning portfolios with AI-powered tools, custom domains, and seamless deployment",
-      "getStarted": "Get Started",
-      "startBuilding": "Start Building Free"
-    },
+    "title": "Create Your Professional Portfolio",
+    "subtitle": "Build stunning portfolios with AI-powered tools, custom domains, and professional templates",
+    "getStarted": "Get Started",
+    "learnMore": "Learn More",
     "features": {
-      "title": "Everything You Need",
       "aiPowered": {
-        "title": "AI-Powered Tools",
-        "description": "Voice-to-text input, document extraction, and intelligent job matching"
+        "title": "AI-Powered Creation",
+        "description": "Use voice-to-text and document extraction to build your portfolio faster"
       },
       "customDomains": {
         "title": "Custom Domains",
-        "description": "Deploy your portfolio to custom subdomains with one click"
+        "description": "Deploy your portfolio to custom subdomains and share with the world"
+      },
+      "professionalTemplates": {
+        "title": "Professional Templates",
+        "description": "Choose from multiple CV templates and export to PDF or Word"
       },
       "multiLanguage": {
-        "title": "Multi-language Support",
-        "description": "Built-in support for Vietnamese and English, easily expandable"
-      },
-      "professionalExport": {
-        "title": "Professional Export",
-        "description": "Export your portfolio as PDF or Word documents with multiple templates"
+        "title": "Multi-Language Support",
+        "description": "Create portfolios in multiple languages to reach global audiences"
       },
       "realTimePreview": {
-        "title": "Real-time Preview",
-        "description": "See your changes instantly with live preview functionality"
+        "title": "Real-Time Preview",
+        "description": "See your portfolio changes instantly with live preview functionality"
       },
-      "secureStorage": {
-        "title": "Secure Storage",
-        "description": "Your data is safely stored with Firebase integration and backup"
+      "cloudStorage": {
+        "title": "Cloud Storage",
+        "description": "Your data is safely stored in the cloud and accessible anywhere"
       }
+    }
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "name": "Full Name",
+    "forgotPassword": "Forgot Password?",
+    "dontHaveAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?",
+    "signInWithDemo": "Demo Login",
+    "signInAsAdmin": "Demo as Admin",
+    "signInAsUser": "Demo as User",
+    "errors": {
+      "invalidEmail": "Please enter a valid email address",
+      "passwordTooShort": "Password must be at least 6 characters",
+      "passwordsDontMatch": "Passwords don't match",
+      "emailRequired": "Email is required",
+      "passwordRequired": "Password is required",
+      "nameRequired": "Name is required",
+      "emailAlreadyExists": "Email already exists",
+      "invalidCredentials": "Invalid email or password",
+      "networkError": "Network error. Please try again."
     },
-    "cta": {
-      "title": "Ready to Build Your Portfolio?",
-      "subtitle": "Join thousands of professionals who trust our platform",
-      "button": "Get Started Now"
+    "success": {
+      "signInSuccess": "Successfully signed in!",
+      "signUpSuccess": "Account created successfully!"
     }
   },
   "dashboard": {
@@ -122,26 +107,10 @@
     "quickActions": "Quick Actions",
     "recentActivity": "Recent Activity",
     "stats": {
-      "totalProjects": "Total Projects",
       "profileViews": "Profile Views",
-      "exportCount": "Exports",
-      "lastUpdated": "Last Updated"
-    }
-  },
-  "settings": {
-    "title": "Settings",
-    "language": {
-      "title": "Language",
-      "description": "Choose your preferred language",
-      "english": "English",
-      "vietnamese": "Tiếng Việt"
-    },
-    "theme": {
-      "title": "Theme",
-      "description": "Choose your preferred theme",
-      "light": "Light",
-      "dark": "Dark",
-      "system": "System"
+      "projectsCompleted": "Projects Completed",
+      "skillsAdded": "Skills Added",
+      "exportCount": "Exports"
     }
   }
 }

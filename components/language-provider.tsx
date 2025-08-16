@@ -2,36 +2,44 @@
 
 import type React from "react"
 import { createContext, useContext, useState, useEffect } from "react"
-import { useTranslations } from "next-intl"
-
-type Language = "en" | "vi"
+import { type Locale, locales } from "@/lib/i18n"
 
 interface LanguageContextType {
-  language: Language
-  setLanguage: (lang: Language) => void
-  t: ReturnType<typeof useTranslations>
+  locale: Locale
+  setLocale: (locale: Locale) => void
+  isLoading: boolean
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined)
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguageState] = useState<Language>("en")
-  const t = useTranslations()
+  const [locale, setLocaleState] = useState<Locale>("en")
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    const savedLanguage = localStorage.getItem("portfolio-language") as Language
-    if (savedLanguage && ["en", "vi"].includes(savedLanguage)) {
-      setLanguageState(savedLanguage)
-    }
+    // Get saved locale from localStorage or detect from browser
+    const savedLocale = localStorage.getItem("portfolio-locale") as Locale
+    const browserLocale = navigator.language.split("-")[0] as Locale
+
+    const initialLocale =
+      savedLocale && locales.includes(savedLocale)
+        ? savedLocale
+        : locales.includes(browserLocale)
+          ? browserLocale
+          : "en"
+
+    setLocaleState(initialLocale)
+    setIsLoading(false)
   }, [])
 
-  const setLanguage = (lang: Language) => {
-    setLanguageState(lang)
-    localStorage.setItem("portfolio-language", lang)
+  const setLocale = (newLocale: Locale) => {
+    setLocaleState(newLocale)
+    localStorage.setItem("portfolio-locale", newLocale)
+    // Reload page to apply new locale
     window.location.reload()
   }
 
-  return <LanguageContext.Provider value={{ language, setLanguage, t }}>{children}</LanguageContext.Provider>
+  return <LanguageContext.Provider value={{ locale, setLocale, isLoading }}>{children}</LanguageContext.Provider>
 }
 
 export function useLanguage() {
