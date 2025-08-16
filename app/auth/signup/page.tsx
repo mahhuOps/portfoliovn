@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useAuth } from "@/components/auth/auth-provider"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -19,9 +19,13 @@ export default function SignUpPage() {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [loading, setLoading] = useState(false)
-  const { signUp } = useAuth()
+  const { signUp, user } = useAuth()
   const router = useRouter()
   const { toast } = useToast()
+
+  useEffect(() => {
+    if (user) router.push("/dashboard")
+  }, [user])
 
   const validateForm = () => {
     if (!name.trim()) {
