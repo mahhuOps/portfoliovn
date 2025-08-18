@@ -24,7 +24,7 @@ import { redirect } from "next/navigation"
 import { useEffect } from "react"
 
 export default function AdminDashboard() {
-  const { user, loading, signOut } = useAuth()
+  const { user, loading, logout } = useAuth()
 
   useEffect(() => {
     if (!loading && (!user || user.role !== "admin")) {
@@ -65,7 +65,7 @@ export default function AdminDashboard() {
                 </Button>
               </Link>
               <ThemeToggle />
-              <Button variant="ghost" size="sm" onClick={signOut}>
+              <Button variant="ghost" size="sm" onClick={logout}>
                 <LogOut className="w-4 h-4 mr-2" />
                 Sign Out
               </Button>
