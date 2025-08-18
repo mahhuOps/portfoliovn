@@ -70,9 +70,7 @@ const portfolioData = {
   ],
 }
 
-export default function PublicPortfolio({ params }: { params: { subdomain: string } }) {
-  const { subdomain } = params
-
+export default function PublicPortfolio() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
