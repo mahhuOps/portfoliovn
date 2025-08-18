@@ -4,7 +4,9 @@ import { LanguageProvider } from "@/components/language-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import type { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
 import { Geist, Manrope } from "next/font/google";
+import { getLocale, getMessages } from "next-intl/server";
 import type React from "react";
 import "./globals.css";
 
@@ -22,8 +24,11 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
-    <html suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         <style>{`
           html {
@@ -34,14 +39,16 @@ export default async function RootLayout({
         `}</style>
       </head>
       <body className={`${geist.variable} ${manrope.variable} antialiased`}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-          <LanguageProvider>
-            <FirebaseAuthProvider>
-              <AuthProvider>{children}</AuthProvider>
-            </FirebaseAuthProvider>
-          </LanguageProvider>
-          <Toaster />
-        </ThemeProvider>
+        <NextIntlClientProvider>
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+            <LanguageProvider>
+              <FirebaseAuthProvider>
+                <AuthProvider>{children}</AuthProvider>
+              </FirebaseAuthProvider>
+            </LanguageProvider>
+            <Toaster />
+          </ThemeProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

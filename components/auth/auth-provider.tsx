@@ -10,7 +10,7 @@ import {
   onAuthStateChanged,
   updateProfile,
 } from "firebase/auth"
-import { doc, setDoc, getDoc } from "firebase/firestore"
+import { doc, setDoc, getDoc, DocumentSnapshot } from "firebase/firestore"
 import { auth, db, checkFirebaseConnection, isFirebaseOnline } from "@/lib/firebase"
 
 interface UserProfile {
@@ -21,10 +21,10 @@ interface UserProfile {
   createdAt: Date
   portfolioData: {
     personalInfo: {}
-    projects: []
-    experience: []
-    education: []
-    skills: []
+    projects: any[]
+    experience: any[]
+    education: any[]
+    skills: any[]
   }
 }
 
@@ -86,10 +86,10 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
         }
 
         try {
-          const userDoc = await Promise.race([
+          const userDoc:DocumentSnapshot = await Promise.race([
             getDoc(doc(db, "users", firebaseUser.uid)),
             new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 5000)),
-          ])
+          ]) as DocumentSnapshot;
 
           if (userDoc.exists()) {
             const userData = userDoc.data()
